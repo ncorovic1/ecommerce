@@ -9,14 +9,20 @@ use App\Http\Controllers\ApiController;
 class BuyerCategoryController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of categories of buyed products of the specified buyer.
      *
+     * @param  \App\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
     public function index(Buyer $buyer)
     {
-        $categories = $buyer->transactions()->with('product.categories')->get()
-                        ->pluck('product.categories')->collapse()->unique('id')->values();
+        $categories = $buyer->transactions()
+                        ->with('product.categories')
+                        ->get()
+                        ->pluck('product.categories')
+                        ->collapse()
+                        ->unique('id')
+                        ->values();
 
         return $this->showAll($categories);
     }

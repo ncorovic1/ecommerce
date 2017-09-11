@@ -11,8 +11,9 @@ use App\Http\Controllers\ApiController;
 class TransactionCategoryController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of categories of the product of the specified transaction.
      *
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
     public function index(Transaction $transaction)

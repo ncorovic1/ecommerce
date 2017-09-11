@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Transformers\BuyerTransformer;   
 use App\Transaction;
 use App\Scopes\BuyerScope;
 
 class Buyer extends User
 {
+    public $transformer = BuyerTransformer::class;
+
     protected static function boot() {
         parent::boot();
 

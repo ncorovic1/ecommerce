@@ -9,8 +9,9 @@ use App\Http\Controllers\ApiController;
 class SellerCategoryController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of categories of the specified seller.
      *
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
     public function index(Seller $seller)

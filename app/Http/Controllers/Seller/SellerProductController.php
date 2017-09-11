@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Seller;
 use App\User;
 use App\Product;
+use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ApiController;
@@ -12,8 +13,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
 {
+    public function __construct() {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . ProductTransformer::class)->only(['store', 'update']);
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of products of the specified seller.
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,9 +32,10 @@ class SellerProductController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created product for the specified seller in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $seller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, User $seller)
@@ -55,10 +63,11 @@ class SellerProductController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified product for the specified seller in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Seller  $seller
+     * @param  \App\Seller  $seller 
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Seller $seller, Product $product)
@@ -89,7 +98,8 @@ class SellerProductController extends ApiController
         }
 
         if ($request->hasFile('image')) {
-            
+            Storage::delete($product->image);
+            $product->image = $request->image->store('');
         }
 
         //Dirty when something changed <==> $product->isClean()
@@ -103,9 +113,10 @@ class SellerProductController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the product for the specified seller from storage.
      *
      * @param  \App\Seller  $seller
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Seller $seller, Product $product)

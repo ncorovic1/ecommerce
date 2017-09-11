@@ -9,8 +9,9 @@ use App\Http\Controllers\ApiController;
 class ProductBuyerController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of buyers of the specified product.
      *
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
     public function index(Product $product)

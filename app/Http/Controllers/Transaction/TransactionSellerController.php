@@ -9,8 +9,9 @@ use App\Http\Controllers\ApiController;
 class TransactionSellerController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of seller of the specified transaction.
      *
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
     public function index(Transaction $transaction)

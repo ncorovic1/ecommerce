@@ -9,7 +9,7 @@ use App\Http\Controllers\ApiController;
 class SellerController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of sellers.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,14 +21,16 @@ class SellerController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified seller.
      *
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
     public function show(Seller $seller)
     {
-        //$seller = Seller::has('products')->findOrFail($id);
+        // Without implicit binding
+        // $seller = Seller::has('products')->findOrFail($id);
+        // End
         return $this->showOne($seller);
     }
 }

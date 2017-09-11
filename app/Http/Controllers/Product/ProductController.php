@@ -9,7 +9,7 @@ use App\Http\Controllers\ApiController;
 class ProductController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of products.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +21,7 @@ class ProductController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified product.
      *
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response

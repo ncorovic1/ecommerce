@@ -9,14 +9,19 @@ use App\Http\Controllers\ApiController;
 class CategoryTransactionController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of transactions of the specified category.
      *
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function index(Category $category)
     {
-        $transactions = $category->products()->whereHas('transactions')->with('transactions')
-                            ->get()->pluck('transactions')->collapse();
+        $transactions = $category->products()
+                            ->whereHas('transactions')
+                            ->with('transactions')
+                            ->get()
+                            ->pluck('transactions')
+                            ->collapse();
         
         return $this->showAll($transactions);
     }

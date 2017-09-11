@@ -9,7 +9,7 @@ use App\Http\Controllers\ApiController;
 class TransactionController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of transactions.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +21,7 @@ class TransactionController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified transaction.
      *
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response

@@ -10,8 +10,9 @@ use App\Http\Controllers\ApiController;
 class ProductCategoryController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of categories of the specified product.
      *
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
     public function index(Product $product)
@@ -22,10 +23,11 @@ class ProductCategoryController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified product with the specified category in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \App\Product   $product
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product, Category $category)
@@ -36,9 +38,10 @@ class ProductCategoryController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove category from the specified product from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product   $product
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product, Category $category)

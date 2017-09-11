@@ -3,25 +3,32 @@
 namespace App\Http\Controllers\User;
 
 use App\User;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
 class UserController extends ApiController
 {
+    public function __construct() {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update']);
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of users.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $users = User::all();
-        
+
         return $this->showAll($users);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,9 +55,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -59,10 +66,10 @@ class UserController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -105,9 +112,9 @@ class UserController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified user from storage.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
@@ -115,5 +122,29 @@ class UserController extends ApiController
         $user->delete();
 
         return $this->showOne($user);
+    }
+
+    public function verify($token) 
+    {
+        $user = User::where('verification_token', $token)->firstOrfail();
+
+        $user->verified = User::VERIFIED_USER;
+        $user->verification_token = null;
+
+        $user->save();
+
+        return $this->showMessage('The account has been verified succesfully.');
+    }
+
+    public function resend(User $user) 
+    {
+        if ($user->isVerified())
+            return $this->errorResponse('The user is already verified', 409);
+
+        $user->verification_token = $user->generateVerificationCode();
+
+        $user->save();
+
+        return $this->showMessage('The verification token has been resend.');
     }
 }

@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Category;
 
 use App\Category;
+use App\Transformers\CategoryTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
 class CategoryController extends ApiController
 {
+    public function __construct() {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . CategoryTransformer::class)->only(['store', 'update']);
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of the categories.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +28,7 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created category in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -30,7 +37,7 @@ class CategoryController extends ApiController
     {
         $rules = [
             'name' => 'required',
-            'description' => 'required|',
+            'description' => 'required',
         ];
         $this->validate($request, $rules);
 
@@ -41,9 +48,9 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified category.
      *
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
@@ -52,10 +59,10 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified category in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Category $category)
@@ -79,9 +86,9 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified category from storage.
      *
-     * @param  int  $id
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
